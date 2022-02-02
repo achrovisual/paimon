@@ -1,37 +1,11 @@
-start :-
-  write('Hello!'),
-  nl,
-  hypothesis(Qualification),
-  write(Qualification).
-  undo.
+:- dynamic yes/1,no/1.
 
-hypothesis(filipino_swedish) :- filipino_swedish, !.
+consult(TravelerName) :-
+  write("Are you Filipino?: "), read(Nationality),
+  (Nationality = 'Y' ; Nationality = 'y'),
+  write("Are you Swedish?: "), read(Citizenship),
+  (Citizenship = 'Y' ; Citizenship = 'y'),
+  write("Do you have EAA-issued vaccine certifcate?: "), read(Certification),
+  (Certification = 'Y' ; Certification = 'y'),
 
-
-filipino_swedish:-
-  requirements(filipino),
-  requirements(swedish_citizen),
-  requirements(covid_certificate).
-
-ask(Question) :-
-  write('Are you '),
-  write(Question),
-  write('? '),
-  nl,
-  ( (Response == yes ; Response == y)
-  ->
-  assert(yes(Question)) ;
-  assert(no(Question)), fail).
-
-requirements(R) :-
-  (yes(R)
-  ->
-  true ;
-  (no(R)
-  ->
-  fail ;
-  ask(R))).
-
-undo :- retract(yes(_)),fail.
-undo :- retract(no(_)),fail.
-undo.
+getResult() :-
