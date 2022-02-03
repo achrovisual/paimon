@@ -4,3 +4,4 @@
 :- dynamic certificate/1.
 :- dynamic tourism/1.
 :- dynamic exemption/1.
+:- dynamic residency/1.
