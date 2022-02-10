@@ -34,9 +34,14 @@ start(TravelerName) :-
   write("Are you a foreign student in Sweden? "), nl, read(STR),
   ((STR = 'Yes' ; STR = 'yes' ; STR = 'Y' ; STR = 'y') -> assert(exemption(TravelerName)) ; true),
 
-  % Ask if the traveler is working in the healthcare or transportation industry in Sweden. If yes, assert the fact into the knowledge base, i.e. the traveler is working in one of the aforementioned industries.
+  % Ask if the traveler is working in the healthcare or transportation industry in Sweden. If yes, assert the fact into the knowledge base, 
+  % i.e. the traveler is working in one of the aforementioned industries.
   write("Are you traveling for work-related reasons such as healthcare and transportation industries? "), nl, read(WKR),
   ((WKR= 'Yes' ; WKR = 'yes' ; WKR = 'Y' ; WKR = 'y') -> assert(exemption(TravelerName)) ; true),
+
+  % Ask if the traveler is invited by a Swedish Government Office. If yes, add to KB.
+  write("Are you traveling to Sweden because you are invited by a Swedish Government Office?"), nl, read(INV), 
+  ((INV = "Yes"; INV = "yes"; INV = "Y"; INV = 'y') -> assert(exemption(TravelerName)) ; true),
 
   % Check if traveler is allowed based on their description, i.e. dual citizen, resident, official business (student or work-related). 
   (completeDocuments(TravelerName) -> (
