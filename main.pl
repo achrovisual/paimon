@@ -1,6 +1,18 @@
 :- consult("scenarios.pl").
 
-start(TravelerName) :-
+start:-
+  write("Welcome to the Travel Adviser Agent program!"), nl,
+  write("How many are you in the party? (max of 4): "), read(Count),
+  (Count<1 -> write("It seems no one is planning to travel. See you next time!") ; true) -> Count>=1,
+  (Count>4 -> write("Sorry, I can only cater up to 4 passengers in a party.") ; true) -> Count=<4,
+  loop(0, Count),
+  write("Thank you for using the Travel Adviser Agent program. See you next time!").
+
+loop(Stop, Stop).
+loop(Start, Stop) :-
+  Start<Stop,
+
+  write("Please enter your name: "), nl, read(TravelerName), nl, nl,
   format("Good day, ~w!~n~n", [TravelerName]),
 
   % Ask if the traveler is a Filipino. If yes, assert the fact into the knowledge base, i.e. the traveler is a Filipino.
@@ -60,4 +72,6 @@ start(TravelerName) :-
     resident(TravelerName) ;
     officialBusiness(TravelerName) ;
     (tourist(TravelerName) -> write("Sorry, you're not allowed to enter.")) -> false
-  )).
+  )),
+
+  Step is Start+1, loop(Step, Stop).
