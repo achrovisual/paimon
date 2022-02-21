@@ -70,8 +70,16 @@ questions:-
     (tourist(TravelerName) -> write("Sorry, you're not allowed to enter.")) -> true
   )));
 
-  write("Sorry, I can only cater to Filipino travelers.")), nl.
-
+  (write("Sorry, I can only cater to Filipino travelers."); true)),
+  retract(visa(TravelerName)),
+  retract(citizenship(TravelerName)),
+  retract(nationality(TravelerName)),
+  retract(certificate(TravelerName)),
+  retract(tourism(TravelerName)),
+  retract(exemption(TravelerName)),
+  retract(residency(TravelerName)),
+  nl.
+  
 loop(Stop, Stop).
 loop(Start, Stop) :-
   Start<Stop,
