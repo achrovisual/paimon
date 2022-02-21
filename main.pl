@@ -35,31 +35,31 @@ questions:-
   ((VCR = 'Yes' ; VCR = 'yes' ; VCR = 'Y' ; VCR = 'y') -> assert(certificate(TravelerName)) ; true),
 
   % Ask if the traveler is traveling as a tourist. If yes, assert the fact into the knowledge base, i.e. the traveler is going to Sweden for tourism.
-  write("Are you traveling for tourism?: "), nl, read(TRR),
+  write("Are you travelling to sightsee/take a vacation/take a tour?: "), nl, read(TRR),
   ((TRR = 'Yes' ; TRR = 'yes' ; TRR = 'Y' ; TRR = 'y') -> assert(tourism(TravelerName)) ; true),
 
   % Ask if the traveler is studying in Sweden. If yes, assert the fact into the knowledge base, i.e. the traveler is foreign student in Sweden.
-  write("Are you a foreign student in Sweden? "), nl, read(STR),
-  ((STR = 'Yes' ; STR = 'yes' ; STR = 'Y' ; STR = 'y') -> assert(exemption(TravelerName)) ; true),
+  (not(exemption(TravelerName)) -> (write("Are you a foreign student in Sweden? "), nl, read(STR),
+  ((STR = 'Yes' ; STR = 'yes' ; STR = 'Y' ; STR = 'y') -> assert(exemption(TravelerName)) ; true)); true),
 
   /* Ask if the traveler is working in the healthcare or transportation industry in Sweden. If yes, assert the fact into the knowledge base, 
      i.e. the traveler is working in one of the aforementioned industries. */
-  write("Are you traveling for work-related reasons such as healthcare and transportation industries?: "), nl, read(WKR),
-  ((WKR= 'Yes' ; WKR = 'yes' ; WKR = 'Y' ; WKR = 'y') -> assert(exemption(TravelerName)) ; true),
+  (not(exemption(TravelerName)) -> (write("Are you traveling for work-related reasons such as healthcare and transportation industries?: "), nl, read(WKR),
+  ((WKR = 'Yes' ; WKR = 'yes' ; WKR = 'Y' ; WKR = 'y') -> assert(exemption(TravelerName)) ; true)); true),
 
   /* Ask if the traveler is invited by a Swedish Government Office. If yes, add to KB.*/
-  write("Are you traveling to Sweden because you are invited by a Swedish Government Office?"), nl, read(EXI), 
-  ((EXI = 'Yes' ; EXI = 'yes' ; EXI = 'Y' ; EXI = 'y') -> assert(exemption(TravelerName)) ; true),
+  (not(exemption(TravelerName)) -> (write("Are you traveling to Sweden because you are invited by a Swedish Government Office?"), nl, read(EXI), 
+  ((EXI = 'Yes' ; EXI = 'yes' ; EXI = 'Y' ; EXI = 'y') -> assert(exemption(TravelerName)) ; true)); true),
  
   /* Ask if the traveler works in an international organization/invited by such an organization, where their presence is necessary for their activity,
      where it is within the cope of international defense cooperation, aid workers, and civil defense staff. If yes, store in KB. */
-  write("Are you traveling to Sweden because you are invited by an organization whose activities are within the scope of international defense cooperation, aid workers, and civil defense staff?: "), nl, read(EXO), 
-  ((EXO = 'Yes' ; EXO = 'yes' ; EXO = 'Y' ; EXO = 'y') -> assert(exemption(TravelerName)) ; true),
+  (not(exemption(TravelerName)) -> (write("Are you traveling to Sweden because you are invited by an organization whose activities are within the scope of international defense cooperation, aid workers, and civil defense staff?: "), nl, read(EXO), 
+  ((EXO = 'Yes' ; EXO = 'yes' ; EXO = 'Y' ; EXO = 'y') -> assert(exemption(TravelerName)) ; true)); true),
   
   /* Ask if the traveler is entering Sweden in order to perform highly-skilled work, when it must be done immediately and cannot be done remotely.
      Also, participation in an international elite sports competition is included in this scope. If yes, store into KB. */
-  write("Are you traveling to Sweden because you are to perform highly-skilled work (participation in international elite sports competitions belong in this category)?: "), nl, read(EXH), 
-  ((EXH = 'Yes' ; EXH = 'yes' ; EXH = 'Y'; EXH = 'y') -> assert(exemption(TravelerName)) ; true),
+  (not(exemption(TravelerName)) -> (write("Are you traveling to Sweden because you are to perform highly-skilled work (participation in international elite sports competitions belong in this category)?: "), nl, read(EXH), 
+  ((EXH = 'Yes' ; EXH = 'yes' ; EXH = 'Y'; EXH = 'y') -> assert(exemption(TravelerName)) ; true)); true),
 
 
   % Check if traveler is allowed based on their description, i.e. dual citizen, resident, official business (student or work-related). 
