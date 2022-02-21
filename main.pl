@@ -1,17 +1,25 @@
 :- consult("scenarios.pl").
 
-start(TravelerName) :-
+start:-
+  write("Welcome to the Travel Adviser Agent program!"), nl,
+  write("How many are you in the party? (max of 4): "), read(Count),
+  (Count<1 -> write("It seems no one is planning to travel. See you next time!") ; true) -> Count>=1,
+  (Count>4 -> write("Sorry, I can only cater up to 4 passengers in a party.") ; true) -> Count=<4,
+  loop(0, Count),
+  write("Thank you for using the Travel Adviser Agent program. See you next time!").
+
+questions:-
+  write("Please enter your name: "), nl, read(TravelerName), nl, nl,
   format("Good day, ~w!~n~n", [TravelerName]),
 
   % Ask if the traveler is a Filipino. If yes, assert the fact into the knowledge base, i.e. the traveler is a Filipino.
-  (not(nationality(TravelerName)) -> (write("Are you a Filipino?: "), nl, read(NTR),
-  ((NTR = 'Yes' ; NTR = 'yes' ; NTR = 'Y' ; NTR = 'y') -> assert(nationality(TravelerName)) ; true)); true),
+  write("Are you a Filipino?: "), nl, read(NTR),
+  ((NTR = 'Yes' ; NTR = 'yes' ; NTR = 'Y' ; NTR = 'y') -> assert(nationality(TravelerName)) ; true),
 
-  % If the traveler is not a Filipino, terminate as the travel agent can only accommodate Filipinos.
-  (not(nationality(TravelerName)) -> write("Sorry, I can only cater to Filipino travelers.") ; true) -> nationality(TravelerName),
-
-  % Ask if the traveler has Swedish citizenship. If yes, assert the fact into the knowledge base, i.e. the traveler is Swedish citizen.
-  write("Are you a Swedish citizen?: "), nl, read(DCR),
+  % If the traveler is not a Filipino, terminate as the travel agent can only accommodate Filipinos. 
+  % Else, ask if the traveler has Swedish citizenship. If yes, assert the fact into the knowledge base, i.e. the traveler is Swedish citizen.
+  ((nationality(TravelerName)) -> 
+  (write("Are you a Swedish citizen?: "), nl, read(DCR),
   ((DCR = 'Yes' ; DCR = 'yes' ; DCR = 'Y' ; DCR = 'y') -> assert(citizenship(TravelerName)) ; true),
 
   % Ask if the traveler is a resident in Sweden. If yes, assert the fact into the knowledge base, i.e. the traveler resides in Sweden.
@@ -60,4 +68,12 @@ start(TravelerName) :-
     resident(TravelerName) ;
     officialBusiness(TravelerName) ;
     (tourist(TravelerName) -> write("Sorry, you're not allowed to enter.")) -> false
-  )).
+  )));
+
+  write("Sorry, I can only cater to Filipino travelers.")), nl.
+
+loop(Stop, Stop).
+loop(Start, Stop) :-
+  Start<Stop,
+  questions,
+  Step is Start+1, loop(Step, Stop).
