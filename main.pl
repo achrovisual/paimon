@@ -67,7 +67,7 @@ questions:-
     dualCitizen(TravelerName) ;
     resident(TravelerName) ;
     officialBusiness(TravelerName) ;
-    (tourist(TravelerName) -> write("Sorry, you're not allowed to enter.")) -> false
+    (tourist(TravelerName) -> write("Sorry, you're not allowed to enter.")) -> true
   )));
 
   write("Sorry, I can only cater to Filipino travelers.")), nl.
