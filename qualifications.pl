@@ -5,3 +5,4 @@
 :- dynamic tourism/1.
 :- dynamic exemption/1.
 :- dynamic residency/1.
+:- dynamic covidtest/1.

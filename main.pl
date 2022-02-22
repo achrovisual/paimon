@@ -16,9 +16,9 @@ questions:-
   write("Are you a Filipino?: "), nl, read(NTR),
   ((NTR = 'Yes' ; NTR = 'yes' ; NTR = 'Y' ; NTR = 'y') -> assert(nationality(TravelerName)) ; true),
 
-  % If the traveler is not a Filipino, terminate as the travel agent can only accommodate Filipinos. 
+  % If the traveler is not a Filipino, terminate as the travel agent can only accommodate Filipinos.
   % Else, ask if the traveler has Swedish citizenship. If yes, assert the fact into the knowledge base, i.e. the traveler is Swedish citizen.
-  ((nationality(TravelerName)) -> 
+  ((nationality(TravelerName)) ->
   (write("Are you a Swedish citizen?: "), nl, read(DCR),
   ((DCR = 'Yes' ; DCR = 'yes' ; DCR = 'Y' ; DCR = 'y') -> assert(citizenship(TravelerName)) ; true),
 
@@ -30,8 +30,12 @@ questions:-
   write("Do you have visa issued within the last 90 days?: "), nl, read(VVR),
   ((VVR = 'Yes' ; VVR = 'yes' ; VVR = 'Y' ; VVR = 'y') -> assert(visa(TravelerName)) ; true),
 
+  % Ask if the traveler has a valid negative COVID-19 test result. If yes, assert the fact into the knowledge base, i.e. the traveler has a valid negative COVID-19 test result.
+  write("Do you have valid negative COVID-19 test result/proof of recovery?: "), nl, read(PCR),
+  ((PCR = 'Yes' ; PCR = 'yes' ; PCR = 'Y' ; PCR = 'y') -> assert(covidtest(TravelerName)) ; true),
+
   % Ask if the traveler has a valid vaccine certificate. If yes, assert the fact into the knowledge base, i.e. the traveler has a valid vaccine certificate.
-  write("Do you have an EAA-issued vaccine certificate?: "), nl, read(VCR),
+  write("Do you have a vaccine certificate?: "), nl, read(VCR),
   ((VCR = 'Yes' ; VCR = 'yes' ; VCR = 'Y' ; VCR = 'y') -> assert(certificate(TravelerName)) ; true),
 
   % Ask if the traveler is traveling as a tourist. If yes, assert the fact into the knowledge base, i.e. the traveler is going to Sweden for tourism.
@@ -42,27 +46,34 @@ questions:-
   (not(exemption(TravelerName)) -> (write("Are you a foreign student in Sweden? "), nl, read(STR),
   ((STR = 'Yes' ; STR = 'yes' ; STR = 'Y' ; STR = 'y') -> assert(exemption(TravelerName)) ; true)); true),
 
-  /* Ask if the traveler is working in the healthcare or transportation industry in Sweden. If yes, assert the fact into the knowledge base, 
-     i.e. the traveler is working in one of the aforementioned industries. */
+  % Ask if the traveler is traveling for urgent family reasons. If yes, assert the fact into the knowledge base, i.e. the traveler is traveling for urgent family reasons.
+  (not(exemption(TravelerName)) -> (write("Are you traveling for urgent family reasons? "), nl, read(UFR),
+  ((UFR = 'Yes' ; UFR = 'yes' ; UFR = 'Y' ; UFR = 'y') -> assert(exemption(TravelerName)) ; true)); true),
+
+  % Ask if the traveler is working in the healthcare or transportation industry in Sweden. If yes, assert the fact into the knowledge base, i.e. the traveler is working in one of the aforementioned industries.
   (not(exemption(TravelerName)) -> (write("Are you traveling for work-related reasons such as healthcare and transportation industries?: "), nl, read(WKR),
   ((WKR = 'Yes' ; WKR = 'yes' ; WKR = 'Y' ; WKR = 'y') -> assert(exemption(TravelerName)) ; true)); true),
 
+  % Ask if the traveler is a seaman entering Sweden. If yes, assert the fact into the knowledge base, i.e. the traveler is a seaman.
+  (not(exemption(TravelerName)) -> (write("Are you a seaman entering Sweden?: "), nl, read(SMN),
+  ((SMN = 'Yes' ; SMN = 'yes' ; SMN = 'Y' ; SMN = 'y') -> assert(exemption(TravelerName)) ; true)); true),
+
   /* Ask if the traveler is invited by a Swedish Government Office. If yes, add to KB.*/
-  (not(exemption(TravelerName)) -> (write("Are you traveling to Sweden because you are invited by a Swedish Government Office?"), nl, read(EXI), 
+  (not(exemption(TravelerName)) -> (write("Are you traveling to Sweden because you are invited by a Swedish Government Office?"), nl, read(EXI),
   ((EXI = 'Yes' ; EXI = 'yes' ; EXI = 'Y' ; EXI = 'y') -> assert(exemption(TravelerName)) ; true)); true),
- 
+
   /* Ask if the traveler works in an international organization/invited by such an organization, where their presence is necessary for their activity,
      where it is within the cope of international defense cooperation, aid workers, and civil defense staff. If yes, store in KB. */
-  (not(exemption(TravelerName)) -> (write("Are you traveling to Sweden because you are invited by an organization whose activities are within the scope of international defense cooperation, aid workers, and civil defense staff?: "), nl, read(EXO), 
+  (not(exemption(TravelerName)) -> (write("Are you traveling to Sweden because you are invited by an organization whose activities are within the scope of international defense cooperation, aid workers, and civil defense staff?: "), nl, read(EXO),
   ((EXO = 'Yes' ; EXO = 'yes' ; EXO = 'Y' ; EXO = 'y') -> assert(exemption(TravelerName)) ; true)); true),
-  
+
   /* Ask if the traveler is entering Sweden in order to perform highly-skilled work, when it must be done immediately and cannot be done remotely.
      Also, participation in an international elite sports competition is included in this scope. If yes, store into KB. */
-  (not(exemption(TravelerName)) -> (write("Are you traveling to Sweden because you are to perform highly-skilled work (participation in international elite sports competitions belong in this category)?: "), nl, read(EXH), 
+  (not(exemption(TravelerName)) -> (write("Are you traveling to Sweden because you are to perform highly-skilled work (participation in international elite sports competitions belong in this category)?: "), nl, read(EXH),
   ((EXH = 'Yes' ; EXH = 'yes' ; EXH = 'Y'; EXH = 'y') -> assert(exemption(TravelerName)) ; true)); true),
 
 
-  % Check if traveler is allowed based on their description, i.e. dual citizen, resident, official business (student or work-related). 
+  % Check if traveler is allowed based on their description, i.e. dual citizen, resident, official business (student or work-related).
   (completeDocuments(TravelerName) -> (
     (dualCitizen(TravelerName) ;
     resident(TravelerName) ;
