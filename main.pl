@@ -72,21 +72,17 @@ questions:-
   (not(exemption(TravelerName)) -> (write("Are you traveling to Sweden because you are to perform highly-skilled work (participation in international elite sports competitions belong in this category)?: "), nl, read(EXH),
   ((EXH = 'Yes' ; EXH = 'yes' ; EXH = 'Y'; EXH = 'y') -> assert(exemption(TravelerName)) ; true)); true),
 
-
-  (not(visa(TravelerName)) ->
-    (write(" • Schengen Visa")) ; true,
-    (not(certificate(TravelerName)) ->
-      (write(" • COVID-19 vaccine certificate (issued within EAA is preferred)") ; true,
-      (not(covidtest(TravelerName)) ->
-        (write(" • Negative COVID-19 test result / Proof of recovery"))))); true),
-
   % Check if traveler is allowed based on their description, i.e. dual citizen, resident, official business (student or work-related).
   (completeDocuments(TravelerName) -> (
     (dualCitizen(TravelerName) ;
     resident(TravelerName) ;
     officialBusiness(TravelerName)) -> (write("Welcome to Sweden!"), nl, nl) ;
     (tourist(TravelerName) -> (write("Sorry, you're not allowed to enter."), nl, nl)); true
-  ); (write("You have incomplete documents. Please acquire the following documents you missed below."), nl, nl)); true);
+  ); (write("You have incomplete documents. Please acquire the following documents you missed below."), nl, nl,
+      (((not(visa(TravelerName)) -> ((write(" - Schengen Visa"), nl); true)) ; true),
+      (((not(certificate(TravelerName)) -> ((write(" - COVID-19 vaccine certificate (issued within EAA is preferred)"), nl); true)),
+      (((not(covidtest(TravelerName)) -> ((write(" - Negative COVID-19 test result / Proof of recovery"), nl); true)); true)) ; true)))
+  ); true); true);
 
   (write("Sorry, I can only cater to Filipino travelers."), nl, nl); true),
   deleteFacts,
@@ -99,6 +95,7 @@ deleteFacts:- retractall(certificate(_)), fail.
 deleteFacts:- retractall(tourism(_)), fail.
 deleteFacts:- retractall(exemption(_)), fail.
 deleteFacts:- retractall(residency(_)), fail.
+deleteFacts:- retractall(covidtest(_)), fail.
 deleteFacts.
 
 loop(Stop, Stop).
