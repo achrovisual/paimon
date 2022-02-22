@@ -70,11 +70,21 @@ questions:-
     (tourist(TravelerName) -> (write("Sorry, you're not allowed to enter."), nl, nl)); true
   ); (write("You have incomplete documents."), nl, nl)); true);
 
-  (write("Sorry, I can only cater to Filipino travelers."), nl, nl); true);
+  (write("Sorry, I can only cater to Filipino travelers."), nl, nl); true),
+  deleteFacts,
   nl.
-  
+
+deleteFacts:- retractall(visa(_)), fail.
+deleteFacts:- retractall(citizenship(_)), fail.
+deleteFacts:- retractall(nationality(_)), fail.
+deleteFacts:- retractall(certificate(_)), fail.
+deleteFacts:- retractall(tourism(_)), fail.
+deleteFacts:- retractall(exemption(_)), fail.
+deleteFacts:- retractall(residency(_)), fail.
+deleteFacts.
+
 loop(Stop, Stop).
-loop(Start, Stop) :-
+loop(Start, Stop):-
   Start<Stop,
   questions,
   Step is Start+1, loop(Step, Stop).
