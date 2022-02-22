@@ -64,20 +64,13 @@ questions:-
 
   % Check if traveler is allowed based on their description, i.e. dual citizen, resident, official business (student or work-related). 
   (completeDocuments(TravelerName) -> (
-    dualCitizen(TravelerName) ;
+    (dualCitizen(TravelerName) ;
     resident(TravelerName) ;
-    officialBusiness(TravelerName) ;
-    (tourist(TravelerName) -> write("Sorry, you're not allowed to enter.")) -> true
-  )));
+    officialBusiness(TravelerName)) -> (write("Welcome to Sweden!"), nl, nl) ;
+    (tourist(TravelerName) -> (write("Sorry, you're not allowed to enter."), nl, nl)); true
+  ); (write("You have incomplete documents."), nl, nl)); true);
 
-  (write("Sorry, I can only cater to Filipino travelers."); true)),
-  retract(visa(TravelerName)),
-  retract(citizenship(TravelerName)),
-  retract(nationality(TravelerName)),
-  retract(certificate(TravelerName)),
-  retract(tourism(TravelerName)),
-  retract(exemption(TravelerName)),
-  retract(residency(TravelerName)),
+  (write("Sorry, I can only cater to Filipino travelers."), nl, nl); true);
   nl.
   
 loop(Stop, Stop).
