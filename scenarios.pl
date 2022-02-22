@@ -1,6 +1,6 @@
 :- consult("qualifications.pl").
 
-completeDocuments(P) :- (visa(P), certificate(P), covidtest(P)).
+completeDocuments(P) :- ((visa(P); citizenship(P)), certificate(P), covidtest(P)).
 
 dualCitizen(P) :- (nationality(P), citizenship(P)).
 

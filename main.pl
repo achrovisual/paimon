@@ -79,7 +79,7 @@ questions:-
     officialBusiness(TravelerName)) -> (write("Welcome to Sweden!"), nl, nl) ;
     (tourist(TravelerName) -> (write("Sorry, you're not allowed to enter."), nl, nl)); true
   ); (write("You have incomplete documents. Please acquire the following documents you missed below."), nl, nl,
-      (((not(visa(TravelerName)) -> ((write(" - Schengen Visa"), nl); true)) ; true),
+      (((not(citizenship(TravelerName)) -> (not(visa(TravelerName)) -> ((write(" - Schengen Visa"), nl); true)); true) ; true),
       (((not(certificate(TravelerName)) -> ((write(" - COVID-19 vaccine certificate (issued within EAA is preferred)"), nl); true)),
       (((not(covidtest(TravelerName)) -> ((write(" - Negative COVID-19 test result / Proof of recovery"), nl); true)); true)) ; true)))
   ); true); true);
