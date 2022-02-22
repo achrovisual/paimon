@@ -73,13 +73,20 @@ questions:-
   ((EXH = 'Yes' ; EXH = 'yes' ; EXH = 'Y'; EXH = 'y') -> assert(exemption(TravelerName)) ; true)); true),
 
 
+  (not(visa(TravelerName)) ->
+    (write(" • Schengen Visa")) ; true,
+    (not(certificate(TravelerName)) ->
+      (write(" • COVID-19 vaccine certificate (issued within EAA is preferred)") ; true,
+      (not(covidtest(TravelerName)) ->
+        (write(" • Negative COVID-19 test result / Proof of recovery"))))); true),
+
   % Check if traveler is allowed based on their description, i.e. dual citizen, resident, official business (student or work-related).
   (completeDocuments(TravelerName) -> (
     (dualCitizen(TravelerName) ;
     resident(TravelerName) ;
     officialBusiness(TravelerName)) -> (write("Welcome to Sweden!"), nl, nl) ;
     (tourist(TravelerName) -> (write("Sorry, you're not allowed to enter."), nl, nl)); true
-  ); (write("You have incomplete documents."), nl, nl)); true);
+  ); (write("You have incomplete documents. Please acquire the following documents you missed below."), nl, nl)); true);
 
   (write("Sorry, I can only cater to Filipino travelers."), nl, nl); true),
   deleteFacts,
